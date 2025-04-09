@@ -1,0 +1,31 @@
+<%= form_with url: form_path, method: form_method, local: true, multipart: true do |f| %>
+  <div class="mb-3">
+    <%= f.label :title, class: "form-label" %>
+    <%= f.text_field :title, value: book.title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.text_area :description, value: book.description, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :pages, class: "form-label" %>
+    <%= f.text_field :pages, value: book.pages, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :isbn, class: "form-label" %>
+    <%= f.text_field :isbn, value: book.isbn, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :pdf_file, class: "form-label" %>
+    <%= f.file_field :pdf_file, value: book.isbn, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.submit "Add a new book", class: "btn btn-warning" %>
+  </div>
+<% end %>
+
