@@ -1,17 +1,27 @@
-<h1>Show the student</h1>
+<h1 class="mb-4 text-center text-primary">🎓 Student Details</h1>
 
-<div class="card" style="width: 18rem;">
-  <%# <img src="..." class="card-img-top" alt="..."> %>
+<div class="card shadow mx-auto" style="max-width: 24rem;">
   <div class="card-body">
-    <h5 class="card-title">Name: <i><%= @student.name %></i></h5>
-    <p class="card-text">Branch: <%= @student.branch %></p>
-    <p class="card-text">Year: <%= @student.year_of_study %></p>
+    <h5 class="card-title">
+      <strong>Name:</strong> <i><%= @student.name %></i>
+    </h5>
+    <p class="card-text">
+      <strong>Branch:</strong> <%= @student.branch %><br>
+      <strong>Year:</strong> <%= @student.year_of_study %>
+    </p>
   </div>
+
   <ul class="list-group list-group-flush">
-    <li class="list-group-item">Email: <%= @student.email %></li>
-    <li class="list-group-item">Phone Number: <%= @student.phone_number %></li>
+    <li class="list-group-item">
+      <strong>Email:</strong> <%= @student.email %>
+    </li>
+    <li class="list-group-item">
+      <strong>Phone Number:</strong> <%= @student.phone_number %>
+    </li>
   </ul>
-  <div class="card-body">
-    <%= link_to "Back to students", students_path %>
+
+  <div class="card-body text-center">
+    <%= link_to "← Back to Students", students_path, class: "btn btn-secondary" %>
   </div>
 </div>
+

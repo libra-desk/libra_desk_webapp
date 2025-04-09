@@ -1,31 +1,31 @@
-<%= form_with url: form_path, method: form_method, local: true, multipart: true do |f| %>
+<%= form_with url: form_path, method: form_method, local: true, multipart: true, html: { class: "p-4 border rounded bg-light shadow-sm" } do |f| %>
   <div class="mb-3">
-    <%= f.label :title, class: "form-label" %>
-    <%= f.text_field :title, value: book.title, class: "form-control" %>
+    <%= f.label :title, class: "form-label fw-bold" %>
+    <%= f.text_field :title, value: book.title, class: "form-control", placeholder: "Book Title" %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :description, class: "form-label" %>
-    <%= f.text_area :description, value: book.description, class: "form-control" %>
+    <%= f.label :description, class: "form-label fw-bold" %>
+    <%= f.text_area :description, value: book.description, class: "form-control", rows: 4, placeholder: "Brief description of the book" %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :pages, class: "form-label" %>
-    <%= f.text_field :pages, value: book.pages, class: "form-control" %>
+    <%= f.label :pages, class: "form-label fw-bold" %>
+    <%= f.number_field :pages, value: book.pages, class: "form-control", placeholder: "Number of pages" %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :isbn, class: "form-label" %>
-    <%= f.text_field :isbn, value: book.isbn, class: "form-control" %>
+    <%= f.label :isbn, class: "form-label fw-bold" %>
+    <%= f.text_field :isbn, value: book.isbn, class: "form-control", placeholder: "ISBN number" %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :pdf_file, class: "form-label" %>
-    <%= f.file_field :pdf_file, value: book.isbn, class: "form-control" %>
+    <%= f.label :pdf_file, "Upload PDF", class: "form-label fw-bold" %>
+    <%= f.file_field :pdf_file, class: "form-control" %>
   </div>
 
-  <div class="mb-3">
-    <%= f.submit "Add a new book", class: "btn btn-warning" %>
+  <div class="text-end">
+    <%= f.submit "Add Book", class: "btn btn-success px-4" %>
   </div>
 <% end %>
 

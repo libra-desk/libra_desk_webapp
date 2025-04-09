@@ -1,39 +1,43 @@
-<h1>Students</h1>
+<h1 class="mb-4 text-center text-success">Students</h1>
 
-<%= link_to "Register a new Student", new_student_path %>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Branch admitted in</th>
-      <th scope="col">Year</th>
-      <th scope="col">E-mail</th>
-      <th scope="col">Phone Number</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @students.each do |student| %>
+<div class="mb-3 text-end">
+  <%= link_to "➕ Register a New Student", new_student_path, class: "btn btn-success" %>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered align-middle">
+    <thead class="table-dark">
       <tr>
-        <th scope="row"><%= student.id %></th>
-        <td><%= student.name %></td>
-        <td><%= student.branch %></td>
-        <td><%= student.year_of_study %></td>
-        <td><%= student.email %></td>
-        <td><%= student.phone_number %></td>
-        
-        <td>
-          <%= link_to "Show", student_path(student.id), class: "btn btn-warning" %>
-        </td>
-        <td>
-          <%= link_to "Edit", edit_student_path(student.id), class: "btn btn-primary" %>
-        </td>
-        <td>
-          <%= button_to "Delete", student_path(student.id), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure you want to remove #{student.name}" } %> 
-        </td>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Branch</th>
+        <th scope="col">Year</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Phone</th>
+        <th scope="col" colspan="3" class="text-center">Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @students.each do |student| %>
+        <tr>
+          <th scope="row"><%= student.id %></th>
+          <td><%= student.name %></td>
+          <td><%= student.branch %></td>
+          <td><%= student.year_of_study %></td>
+          <td><%= student.email %></td>
+          <td><%= student.phone_number %></td>
+          <td class="text-center">
+            <%= link_to "Show", student_path(student.id), class: "btn btn-warning btn-sm" %>
+          </td>
+          <td class="text-center">
+            <%= link_to "Edit", edit_student_path(student.id), class: "btn btn-primary btn-sm" %>
+          </td>
+          <td class="text-center">
+            <%= button_to "Delete", student_path(student.id), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Are you sure you want to remove #{student.name}?" } %> 
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 

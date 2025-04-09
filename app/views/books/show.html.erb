@@ -1,21 +1,33 @@
-<h1>Show the book</h1>
+<h1 class="mb-4 text-center text-primary">📘 Book Details</h1>
 
-<div class="card" style="width: 18rem;">
-  <%# <img src="..." class="card-img-top" alt="..."> %>
+<div class="card shadow mx-auto" style="max-width: 24rem;">
   <div class="card-body">
-    <h5 class="card-title">Title: <i><%= @book.title %></i></h5>
-    <p class="card-text">Description: <%= @book.description %></p>
+    <h5 class="card-title">
+      <strong>Title:</strong> <i><%= @book.title %></i>
+    </h5>
+    <p class="card-text">
+      <strong>Description:</strong> <%= @book.description.presence || "No description provided." %>
+    </p>
   </div>
+
   <ul class="list-group list-group-flush">
-    <li class="list-group-item">Pages: <%= @book.pages %></li>
-    <li class="list-group-item">ISBN: <%= @book.isbn %></li>
-    <% if @book.pdf_file.present? %>
-      <%= link_to "Read PDF", @book.pdf_file, class: "btn btn-warning" %>
-    <% else %>
-      <span>No PDF available!</span>
-    <% end %>
+    <li class="list-group-item">
+      <strong>Pages:</strong> <%= @book.pages %>
+    </li>
+    <li class="list-group-item">
+      <strong>ISBN:</strong> <%= @book.isbn %>
+    </li>
+    <li class="list-group-item text-center">
+      <% if @book.pdf_file.present? %>
+        <%= link_to "📄 Read PDF", @book.pdf_file, class: "btn btn-outline-success btn-sm", target: "_blank" %>
+      <% else %>
+        <span class="text-danger fw-semibold">No PDF available!</span>
+      <% end %>
+    </li>
   </ul>
-  <div class="card-body">
-    <%= link_to "Back to Books", books_path %>
+
+  <div class="card-body text-center">
+    <%= link_to "← Back to Books", books_path, class: "btn btn-secondary" %>
   </div>
 </div>
+
