@@ -1,5 +1,5 @@
-require 'net/http'
-require 'ostruct'
+require "net/http"
+require "ostruct"
 
 class BooksController < ApplicationController
   def index
@@ -28,10 +28,10 @@ class BooksController < ApplicationController
       description: params[:description],
       pages: params[:pages],
       isbn: params[:isbn]
-    } 
+    }
 
     if params[:pdf_file].present?
-      book_data[:pdf_file] = File.new(params[:pdf_file].path, 'rb')
+      book_data[:pdf_file] = File.new(params[:pdf_file].path, "rb")
     end
 
     payload_body = { book: book_data }
@@ -39,14 +39,14 @@ class BooksController < ApplicationController
     begin
       # Here we used RestClient for a cleaner syntax for uploading pdfs
       response = RestClient.post("#{BOOK_MS_ROOT_PATH}/books",
-                                 payload_body, 
+                                 payload_body,
                                  { accept: :json }
                                 )
       if response.code == 200 || response.code == 201
         redirect_to books_path, notice: "Book added successfully"
       else
         flash[:alert] = "Book has not been added. There seems to be an error"
-        render :new 
+        render :new
       end
     rescue RestClient::ExceptionWithResponse => e
       flash[:alert] = "ERROR: #{e}"
@@ -91,7 +91,7 @@ class BooksController < ApplicationController
   end
 
   def destroy
-    begin 
+    begin
       RestClient.delete("#{BOOK_MS_ROOT_PATH}/books/#{params[:id]}")
       flash[:notice] = "Book was removed from the library"
     rescue RestClient::ExceptionWithResponse => e
@@ -100,5 +100,4 @@ class BooksController < ApplicationController
       redirect_to books_path
     end
   end
-
 end

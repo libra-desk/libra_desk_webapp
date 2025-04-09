@@ -1,3 +1,2 @@
 class StudentsController < ApplicationRecord
-  
 end
