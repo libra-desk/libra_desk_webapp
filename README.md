@@ -1,24 +1,49 @@
-# README
+# 📚 LibraDesk Frontend
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the **frontend Rails app** for **LibraDesk**, a microservice-based library management system.  
+It communicates with multiple backend microservices:
 
-Things you may want to cover:
+- **Book MS**: Manages book data and PDF uploads.
+- **Student MS**: Handles student registrations and profiles.
+- **Borrowing MS**: Manages borrowing and returning of books.
 
-* Ruby version
+---
 
-* System dependencies
+## 🚀 Features
 
-* Configuration
+- View all books
+- Add/edit/delete books with PDF upload support
+- View individual book details
+- Add students via a form
+- Borrowing integration with Borrowing MS
+- Interactive frontend using Rails views and basic JavaScript
 
-* Database creation
+---
 
-* Database initialization
+## 🧱 Tech Stack
 
-* How to run the test suite
+- Ruby on Rails (Frontend)
+- RestClient + Net::HTTP for communication with microservices
+- Bootstrap for styling
+- JSON for data serialization
+- Active Storage used in Book MS for handling file uploads
 
-* Services (job queues, cache servers, search engines, etc.)
+---
 
-* Deployment instructions
+## 🔗 Microservices Used
 
-* ...
+| Service         | URL                      | Port |
+|------------------|--------------------------|------|
+| Book Service     | `http://localhost:3001`  | 3001 |
+| Student Service  | `http://localhost:3002`  | 3002 |
+| Borrowing Service| `http://localhost:3003`  | 3003 |
+
+---
+
+## 🛠 Setup Instructions
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/your-username/libra_desk_webapp.git
+   cd libra_desk_webapp
+
