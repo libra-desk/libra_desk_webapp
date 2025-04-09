@@ -1,0 +1,39 @@
+<h1>Students</h1>
+
+<%= link_to "Register a new Student", new_student_path %>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Branch admitted in</th>
+      <th scope="col">Year</th>
+      <th scope="col">E-mail</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @students.each do |student| %>
+      <tr>
+        <th scope="row"><%= student.id %></th>
+        <td><%= student.name %></td>
+        <td><%= student.branch %></td>
+        <td><%= student.year_of_study %></td>
+        <td><%= student.email %></td>
+        <td><%= student.phone_number %></td>
+        
+        <td>
+          <%= link_to "Show", student_path(student.id), class: "btn btn-warning" %>
+        </td>
+        <td>
+          <%= link_to "Edit", edit_student_path(student.id), class: "btn btn-primary" %>
+        </td>
+        <td>
+          <%= button_to "Delete", student_path(student.id), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure you want to remove #{student.name}" } %> 
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
