@@ -1,6 +1,6 @@
-require 'ostruct'
-require 'net/http'
-require 'json'
+require "ostruct"
+require "net/http"
+require "json"
 
 class StudentsController < ApplicationController
   def index
@@ -35,7 +35,7 @@ class StudentsController < ApplicationController
     uri = URI("#{STUDENT_MS_ROOT_PATH}/students")
 
     http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Post.new(uri.path, { 'Content-Type' => 'application/json' })
+    request = Net::HTTP::Post.new(uri.path, { "Content-Type" => "application/json" })
 
     request.body = student_data.to_json
     response = http.request(request)
@@ -72,7 +72,7 @@ class StudentsController < ApplicationController
 
     uri = URI("#{STUDENT_MS_ROOT_PATH}/students/#{params[:id]}")
     http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Patch.new(uri.path, { 'Content-Type' => 'application/json' })
+    request = Net::HTTP::Patch.new(uri.path, { "Content-Type" => "application/json" })
     request.body = student_data.to_json
 
     response = http.request(request)
@@ -82,7 +82,7 @@ class StudentsController < ApplicationController
     else
       flash[:alert] = "Failed to update student"
       render :edit
-    end 
+    end
   end
 
   def destroy
@@ -92,7 +92,7 @@ class StudentsController < ApplicationController
     rescue RestClient::ExceptionWithResponse => e
       flash[:alert] = "ERROR: #{e}"
     ensure
-      redirect_to students_path 
+      redirect_to students_path
     end
   end
 end
