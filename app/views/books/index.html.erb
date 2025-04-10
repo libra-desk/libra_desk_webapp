@@ -14,7 +14,7 @@
         <th scope="col">Pages</th>
         <th scope="col">ISBN</th>
         <th scope="col">PDF</th>
-        <th scope="col" colspan="3" class="text-center">Actions</th>
+        <th scope="col" colspan="4" class="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -31,6 +31,9 @@
             <% else %>
               <span class="text-muted">Not available</span>
             <% end %>
+          </td>
+          <td class="text-center">
+            <%= button_to "Borrow", borrowings_path(book_id: book.id), class: "btn btn-info btn-sm" %>
           </td>
           <td class="text-center">
             <%= link_to "Show", book_path(book.id), class: "btn btn-warning btn-sm" %>
