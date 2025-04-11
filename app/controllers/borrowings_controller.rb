@@ -4,11 +4,13 @@ require 'json'
 class BorrowingsController < ApplicationController
   def index
     uri = URI("#{BORROWING_MS_ROOT_PATH}/borrowings")
-    borrowing_ms_response = Net::HTTP.get(uri)
-    response = JSON.parse(borrowing_ms_response)
-    # @borrowings = JSON.parse(borrowing_ms_response, object_class: OpenStruct)
+    response = Net::HTTP.start(uri.host, uri.port) do |http|
+      http.get(uri.path, auth_headers)
+    end
 
-    @borrowings = response.map do |borrowing|
+    borrowings = JSON.parse(response.body)
+
+    @borrowings = borrowings.map do |borrowing|
       student = JSON.parse(get_the_student borrowing['student_id'])
       book = JSON.parse(get_the_book borrowing['book_id'])
 
@@ -21,6 +23,9 @@ class BorrowingsController < ApplicationController
         due_on: borrowing['due_at']
       )
     end
+  rescue
+    flash[:notice] = "Some issue happened! Borrowings couldn't be loaded"
+    redirect_to books_path
   end
 
   def create
@@ -33,7 +38,11 @@ class BorrowingsController < ApplicationController
     uri = URI("#{BORROWING_MS_ROOT_PATH}/borrowings")
 
     http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Post.new(uri.path, { "Content-Type" => "application/json" })
+    request = Net::HTTP::Post.new(uri.path,
+                                  auth_headers.merge(
+                                    { "Content-Type" => "application/json" }
+                                  )
+                                 )
 
     request.body = borrow_payload.to_json
     response = http.request(request)
@@ -50,11 +59,22 @@ class BorrowingsController < ApplicationController
 
   def get_the_book book_id
     uri = URI("#{BOOK_MS_ROOT_PATH}/books/#{book_id}")
-    book_ms_response = Net::HTTP.get(uri)
+    response = Net::HTTP.start(uri.host, uri.port) do |http|
+      http.get(uri.path, auth_headers)
+    end
   end
 
   def get_the_student student_id
     uri = URI("#{STUDENT_MS_ROOT_PATH}/students/#{student_id}")
-    student_ms_response = Net::HTTP.get(uri)
+    response = Net::HTTP.start(uri.host, uri.port) do |http|
+      http.get(uri.path, auth_headers)
+    end
+  end
+
+  def auth_headers
+    {
+      "Authorization" => @jwt_token,
+      "Accept" => "application/json"
+    }
   end
 end

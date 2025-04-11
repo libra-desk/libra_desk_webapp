@@ -3,19 +3,15 @@ require "ostruct"
 
 class BooksController < ApplicationController
   def index
-    uri = URI("#{BOOK_MS_ROOT_PATH}/books")
-    book_ms_response = Net::HTTP.get(uri)
-    # OpenStruct is used inorder to do book.title rather than book['title']
-    # It creates an object, but it is expensive in terms of performance
-    #
-    @books = JSON.parse(book_ms_response, object_class: OpenStruct)
+      book_ms_response = RestClient.get("#{BOOK_MS_ROOT_PATH}/books",
+                                        auth_headers
+                                       )
+      @books = JSON.parse(book_ms_response, object_class: OpenStruct)
   end
 
   def show
-    uri = URI("#{BOOK_MS_ROOT_PATH}/books/#{params[:id]}")
-    book_ms_response = Net::HTTP.get(uri)
-
-    @book = OpenStruct.new(JSON.parse(book_ms_response))
+    response = RestClient.get("#{BOOK_MS_ROOT_PATH}/books/#{params[:id]}", auth_headers)
+    @book = OpenStruct.new(JSON.parse(response.body))
   end
 
   def new
@@ -37,11 +33,12 @@ class BooksController < ApplicationController
     payload_body = { book: book_data }
 
     begin
-      # Here we used RestClient for a cleaner syntax for uploading pdfs
-      response = RestClient.post("#{BOOK_MS_ROOT_PATH}/books",
-                                 payload_body,
-                                 { accept: :json }
-                                )
+      response = RestClient.post(
+        "#{BOOK_MS_ROOT_PATH}/books",
+        payload_body,
+        auth_headers
+      )
+
       if response.code == 200 || response.code == 201
         redirect_to books_path, notice: "Book added successfully"
       else
@@ -55,14 +52,10 @@ class BooksController < ApplicationController
   end
 
   def edit
-    uri = URI("#{BOOK_MS_ROOT_PATH}/books/#{params[:id]}")
-    book_ms_response = Net::HTTP.get_response(uri)
-
-    if book_ms_response.is_a? Net::HTTPSuccess
-      @book = OpenStruct.new(JSON.parse(book_ms_response.body))
-    else
-      redirect_to books_path, alert: "Failed to fetch the book from the MS"
-    end
+    response = RestClient.get("#{BOOK_MS_ROOT_PATH}/books/#{params[:id]}", auth_headers)
+    @book = OpenStruct.new(JSON.parse(response.body))
+  rescue RestClient::ExceptionWithResponse
+    redirect_to books_path, alert: "Failed to fetch the book from the MS" 
   end
 
   def update
@@ -75,29 +68,36 @@ class BooksController < ApplicationController
         pdf_file: params[:pdf_file]
       }
     }
-    response = RestClient::Request.execute(
+
+    RestClient::Request.execute(
       method: :patch,
       url: "#{BOOK_MS_ROOT_PATH}/books/#{params[:id]}",
-      payload: payload.compact, # removes nil values if no file is uploaded
-      headers: { accept: :json }
+      payload: payload.compact,
+      headers: auth_headers
     )
 
     flash[:notice] = "Book updated successfully"
     redirect_to books_path
-
-  rescue RestClient::ExceptionWithResponse => e
+  rescue RestClient::ExceptionWithResponse
     flash[:alert] = "Failed to edit the book"
     redirect_to edit_book_path(params[:id])
   end
 
   def destroy
-    begin
-      RestClient.delete("#{BOOK_MS_ROOT_PATH}/books/#{params[:id]}")
-      flash[:notice] = "Book was removed from the library"
-    rescue RestClient::ExceptionWithResponse => e
-      flash[:alert] = "ERROR: #{e}"
-    ensure
-      redirect_to books_path
-    end
+    RestClient.delete("#{BOOK_MS_ROOT_PATH}/books/#{params[:id]}", auth_headers)
+    flash[:notice] = "Book was removed from the library"
+  rescue RestClient::ExceptionWithResponse => e
+    flash[:alert] = "ERROR: #{e}"
+  ensure
+    redirect_to books_path
+  end
+
+  private
+
+  def auth_headers
+    {
+      Authorization: @jwt_token,
+      accept: :json
+    }
   end
 end

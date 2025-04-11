@@ -49,3 +49,7 @@ group :development do
 end
 
 gem "rest-client", "~> 2.1"
+
+gem "jwt", "~> 2.10"
+
+gem "dotenv-rails", "~> 3.1"

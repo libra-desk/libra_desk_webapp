@@ -9,5 +9,7 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new_login'
   post '/login', to: 'sessions#login'
 
+  delete '/signout', to: 'sessions#signout', as: :signout
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

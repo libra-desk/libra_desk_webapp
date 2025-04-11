@@ -12,9 +12,10 @@ class SessionsController < ApplicationController
 
     response_body = JSON.parse(response.body)
     if response.code == '201'
-      session[:jwt_token] = response_body[:token]
-      # redirect_to root_path, notice: "Signed up successfully"
+      session[:jwt_token] = response_body['token']
+      redirect_to books_path, notice: "Signed up successfully"
     else
+      flash.now[:alert] = response_body['error']
       render :new_signup
     end
   end
@@ -27,12 +28,18 @@ class SessionsController < ApplicationController
 
     response_body = JSON.parse(response.body)
     if response.code == '200'
-      session[:jwt_token] = response_body[:token]
-      flash[:notice] = "Signed up"
-      # redirect_to root_path, notice: "Signed up successfully"
+      session[:jwt_token] = response_body['token']
+      flash[:notice] = "Logged in successfully"
+      redirect_to books_path
     else
+      flash.now[:alert] = response_body['error']
       render :new_login
     end
+  end
+
+  def signout
+    reset_session
+    redirect_to books_path, notice: "Signed out successfully"
   end
 
   private
