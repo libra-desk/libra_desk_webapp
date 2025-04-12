@@ -8,6 +8,12 @@
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav ms-auto">
       
+        <% if current_user %>
+          <li class="nav-item">
+            <%= button_to "Borrowed books", borrowed_books_borrowing_path(current_user.user_id), class: "nav-link", data: { turbo: false } %>
+          </li>
+        <% end %>
+
         <li class="nav-item">
           <%= link_to "Books", books_path, class: "nav-link" %>
         </li>

@@ -29,9 +29,8 @@ class BorrowingsController < ApplicationController
   end
 
   def create
-    # TODO: Here in student_id, you need to pass the current user logged in 
     borrow_payload = {
-      student_id: params[:student_id],
+      student_id: current_user.user_id,
       book_id: params[:book_id]
     }
 
@@ -39,9 +38,7 @@ class BorrowingsController < ApplicationController
 
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.path,
-                                  auth_headers.merge(
-                                    { "Content-Type" => "application/json" }
-                                  )
+                                  auth_headers
                                  )
 
     request.body = borrow_payload.to_json
@@ -50,9 +47,55 @@ class BorrowingsController < ApplicationController
     if response.is_a? Net::HTTPSuccess
       flash[:notice] = "Borrowing successful. Happy Reading!"
     else
-      flash[:alert] = "Something happened at the borrowing MS"
+      flash[:alert] = "Seems like the book is not available or you\
+                       might have exceeded the borrowing limit"
     end
     redirect_to books_path
+  end
+
+  def return_book
+    return_book_payload = {
+      student_id: current_user.user_id,
+      book_id: params[:id]
+    }
+
+    uri = URI("#{BORROWING_MS_ROOT_PATH}/return")
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Post.new(uri.path,
+                                  auth_headers
+                                 )
+
+    request.body = return_book_payload.to_json
+    response = http.request(request)
+
+    if response.is_a? Net::HTTPSuccess
+      flash[:notice] = "Successfully returned the book. Good citizen"
+    else
+      flash[:alert] = "Some issue at the borrowing MS side. Seems \
+                       like you get to keep the book!"
+    end
+    redirect_to books_path
+
+  end
+
+  def borrowed_books
+    student_payload = {
+      student_id: params[:id]
+    }
+    uri = URI("#{BORROWING_MS_ROOT_PATH}/borrowed_books")
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Post.new(uri.path,
+                                  auth_headers
+                                 )
+
+    request.body = student_payload.to_json
+    response = http.request(request)
+    books = JSON.parse(response.body)
+    redirect_to borrowed_books_path(books: books)
+  end
+
+  def borrowed_books_view
+    @books = params[:books]
   end
 
   private
@@ -74,7 +117,8 @@ class BorrowingsController < ApplicationController
   def auth_headers
     {
       "Authorization" => @jwt_token,
-      "Accept" => "application/json"
+      "Accept" => "application/json",
+      "Content-Type" => "application/json" 
     }
   end
 end
