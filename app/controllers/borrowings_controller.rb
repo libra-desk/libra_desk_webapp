@@ -31,7 +31,8 @@ class BorrowingsController < ApplicationController
   def create
     borrow_payload = {
       student_id: current_user.user_id,
-      book_id: params[:book_id]
+      book_id: params[:book_id],
+      email: current_user.email
     }
 
     uri = URI("#{BORROWING_MS_ROOT_PATH}/borrowings")
@@ -56,7 +57,8 @@ class BorrowingsController < ApplicationController
   def return_book
     return_book_payload = {
       student_id: current_user.user_id,
-      book_id: params[:id]
+      book_id: params[:id],
+      email: current_user.email
     }
 
     uri = URI("#{BORROWING_MS_ROOT_PATH}/return")
