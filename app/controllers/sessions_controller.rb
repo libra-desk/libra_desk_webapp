@@ -54,7 +54,11 @@ class SessionsController < ApplicationController
   def signup_params
     params.permit(:email,
                   :password,
-                  :password_confirmation
+                  :password_confirmation,
+                  :name,
+                  :branch,
+                  :year_of_study,
+                  :phone_number
                  )
   end
 
