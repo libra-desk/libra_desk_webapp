@@ -19,37 +19,6 @@ class StudentsController < ApplicationController
     @student = OpenStruct.new(JSON.parse(response.body))
   end
 
-  def new
-    @student = OpenStruct.new
-  end
-
-  def create
-    student_data = {
-      student: {
-        name: params[:name],
-        branch: params[:branch],
-        email: params[:email],
-        year_of_study: params[:year_of_study],
-        phone_number: params[:phone_number]
-      }
-    }
-
-    uri = URI("#{STUDENT_MS_ROOT_PATH}/students")
-
-    http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Post.new(uri.path, auth_headers)
-
-    request.body = student_data.to_json
-    response = http.request(request)
-
-    if response.is_a? Net::HTTPSuccess
-      redirect_to students_path, notice: "Student registration successful"
-    else
-      @student = OpenStruct.new(student_data[:student])
-      render :new
-    end
-  end
-
   def edit
     uri = URI("#{STUDENT_MS_ROOT_PATH}/students/#{params[:id]}")
     student_ms_response = Net::HTTP.start(uri.host, uri.port) do |http|
