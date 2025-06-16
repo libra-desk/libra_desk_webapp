@@ -73,7 +73,7 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
     ast (2.4.3)
-    base64 (0.2.0)
+    base64 (0.3.0)
     bcrypt_pbkdf (1.1.1)
     bcrypt_pbkdf (1.1.1-arm64-darwin)
     bcrypt_pbkdf (1.1.1-x86_64-darwin)
@@ -120,7 +120,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.10.2)
-    jwt (2.10.1)
+    jwt (3.0.0)
       base64
     kamal (2.5.3)
       activesupport (>= 7.0)
@@ -340,7 +340,7 @@ DEPENDENCIES
   dotenv-rails (~> 3.1)
   importmap-rails
   jbuilder
-  jwt (~> 2.10)
+  jwt (~> 3.0)
   kamal
   propshaft
   puma (>= 5.0)

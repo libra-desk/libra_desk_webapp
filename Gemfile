@@ -50,6 +50,6 @@ end
 
 gem "rest-client", "~> 2.1"
 
-gem "jwt", "~> 2.10"
+gem "jwt", "~> 3.0"
 
 gem "dotenv-rails", "~> 3.1"
